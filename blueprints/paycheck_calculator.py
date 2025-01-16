@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, make_response
+from flask import Blueprint, request, render_template, make_response, current_app
 import requests, tomlkit
 
 
@@ -23,27 +23,29 @@ pay_calc_bp = Blueprint("PaycheckCalculator", __name__)
 @pay_calc_bp.route("/paycheck-calculator/")
 @pay_calc_bp.route("/paycheck-calculator/<username>")
 def paycheck_calculator(username="guest"):
-    with open("config.toml", "r") as file_handle:
-        toml_config = tomlkit.load(file_handle)
-    if username not in toml_config:
-        toml_config.update(
-            {
-                username: {
-                    "base_payrate": 0.0,
-                    "shiftdiff_payrate": 0.0,
-                    "benefit_cost": 0.0,
-                    "base_hours": 0.0,
-                    "shiftdiff_hours": 0.0,
-                    "overtime_hours": 0.0,
-                }
-            }
-        )
-    toml_config = toml_config[username]
-    return render_template("main.html", username=username, tconfig=toml_config)
+    # TODO: replace following section with flask-ified version
+    # with open("config.toml", "r") as file_handle:
+    #     toml_config = tomlkit.load(file_handle)
+    # if username not in toml_config:
+    #     toml_config.update(
+    #         {
+    #             username: {
+    #                 "base_payrate": 0.0,
+    #                 "shiftdiff_payrate": 0.0,
+    #                 "benefit_cost": 0.0,
+    #                 "base_hours": 0.0,
+    #                 "shiftdiff_hours": 0.0,
+    #                 "overtime_hours": 0.0,
+    #             }
+    #         }
+    #     )
+    # toml_config = toml_config[username]
+    return render_template("old-paycheck-calculator.html")
 
 
 @pay_calc_bp.route("/api/paycheck-calculator/", methods=["POST"])
 def api_paycheck_calculator():
+
     if request.method != "POST" or not request.is_json:
         response = make_response({"error": True, "message": "Incorrect usage of api."})
         response.status_code = 422
@@ -53,7 +55,7 @@ def api_paycheck_calculator():
     headers = {
         "accept": "application/json",
         "content-type": "application/json",
-        "Pcc-Api-Key": "102qqx5AOgcpLhIxbX9LcPBuvmdjefA6h39Nbce57gMcsT",
+        "Pcc-Api-Key": current_app.config["PAYCHECK_CALC_API_KEY"],
     }
 
     BASE_PAYRATE = float(request.json.get("base_payrate"))
@@ -131,24 +133,25 @@ def api_paycheck_calculator():
 
     response = requests.post(url, headers=headers, json=payload)
 
-    with open("config.toml", "r") as file_handle:
-        toml_config = tomlkit.load(file_handle)
+    # TODO: replace the following section with flask session mumbo jumbo
+    # with open("config.toml", "r") as file_handle:
+    #     toml_config = tomlkit.load(file_handle)
 
-    toml_config.update(
-        {
-            request.json.get("username"): {
-                "base_payrate": BASE_PAYRATE,
-                "shiftdiff_payrate": SHIFT_DIFF_PAYRATE,
-                "benefit_cost": BENEFITS_COST,
-                "base_hours": BASE_HOURS,
-                "shiftdiff_hours": SHIFT_DIFF_HOURS,
-                "overtime_hours": OVERTIME_HOURS,
-                "last_netpay": float(response.json().get("content").get("netPay")),
-            }
-        }
-    )
+    # toml_config.update(
+    #     {
+    #         request.json.get("username"): {
+    #             "base_payrate": BASE_PAYRATE,
+    #             "shiftdiff_payrate": SHIFT_DIFF_PAYRATE,
+    #             "benefit_cost": BENEFITS_COST,
+    #             "base_hours": BASE_HOURS,
+    #             "shiftdiff_hours": SHIFT_DIFF_HOURS,
+    #             "overtime_hours": OVERTIME_HOURS,
+    #             "last_netpay": float(response.json().get("content").get("netPay")),
+    #         }
+    #     }
+    # )
 
-    with open("config.toml", "w") as file_handle:
-        tomlkit.dump(toml_config, file_handle)
+    # with open("config.toml", "w") as file_handle:
+    #     tomlkit.dump(toml_config, file_handle)
 
     return response.json().get("content")

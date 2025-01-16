@@ -8,6 +8,7 @@
         <title>{% block title %}{% endblock %}</title>
 
         <link rel="stylesheet" href="{{ url_for('static', filename='reset.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='bulma.min.css') }}">
         {% block head %}{% endblock %}
     </head>
     <body>
