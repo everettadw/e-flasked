@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Paycheck Calculator</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="UTF-8" />
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+        <script type="text/javascript">
+            window.curr_username = "{{ username }}";
+        </script>
+        <script type="text/javascript" src="{{ url_for('static', filename='main.js') }}"></script>
+    </head>
+    <body>
+        <!--
+            Base Payrate
+            Shift Differential Payrate
+            Total Benefit Cost
+            Base Hours
+            Shift Differential Hours
+            Overtime Hours
+        -->
+        <div class="container">
+            <form id="paycheck-calculator-form">
+                <h2>Payrates ( $/HR )</h2>
+                <div class="form-control">
+                    <label for="base_payrate">Base</label>
+                    <input type="float" name="base_payrate" id="base_payrate" value="{{ tconfig["base_payrate"] if tconfig != None }}" />
+                </div>
+                <div class="form-control">
+                    <label for="shiftdiff_payrate">Shift Diff</label>
+                    <input type="float" name="shiftdiff_payrate" id="shiftdiff_payrate" value="{{ tconfig["shiftdiff_payrate"] if tconfig != None }}" />
+                </div>
+                <br />
+                <h2>Hours Worked</h2>
+                <div class="form-control">
+                    <label for="base_hours">Base</label>
+                    <input type="float" name="base_hours" id="base_hours" value="{{ tconfig["base_hours"] if tconfig != None }}" />
+                </div>
+                <div class="form-control">
+                    <label for="shiftdiff_hours">Shift Diff</label>
+                    <input type="float" name="shiftdiff_hours" id="shiftdiff_hours" value="{{ tconfig["shiftdiff_hours"] if tconfig != None }}" />
+                </div>
+                <div class="form-control">
+                    <label for="overtime_hours">OT / HOL</label>
+                    <input type="float" name="overtime_hours" id="overtime_hours" value="{{ tconfig["overtime_hours"] if tconfig != None }}" />
+                </div>
+                <br />
+                <h2>Voluntary Deductions</h2>
+                <div class="form-control">
+                    <label for="benefit_cost">Benefits</label>
+                    <input type="float" name="benefit_cost" id="benefit_cost" value="{{ tconfig["benefit_cost"] if tconfig != None }}" />
+                </div>
+                <div class="form-control-buttons">
+                    <input type="button" value="Calculate"/>
+                </div>
+                <h2>Net Pay: $<span id="netpay">{{ "{:,.2f}".format(tconfig["last_netpay"]) if tconfig["last_netpay"] else "0.00" }}</span></h2>
+            </form>
+        </div>
+    </body>
+</html>
