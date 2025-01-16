@@ -21,8 +21,7 @@ pay_calc_bp = Blueprint("PaycheckCalculator", __name__)
 
 
 @pay_calc_bp.route("/paycheck-calculator/")
-@pay_calc_bp.route("/paycheck-calculator/<username>")
-def paycheck_calculator(username="guest"):
+def paycheck_calculator():
     # TODO: replace following section with flask-ified version
     # with open("config.toml", "r") as file_handle:
     #     toml_config = tomlkit.load(file_handle)
