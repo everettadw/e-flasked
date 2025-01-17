@@ -1,6 +1,6 @@
 from flask import Flask, redirect, render_template
 from flask_login import LoginManager, login_required, current_user, logout_user
-from models import db, User, PaycheckCalculatorConfig
+from models import *
 import tomlkit
 
 from blueprints.paycheck_calculator import pay_calc_bp
@@ -17,6 +17,10 @@ db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "auth.login"
+
+
+with app.app_context():
+    db.create_all()
 
 
 @login_manager.user_loader
