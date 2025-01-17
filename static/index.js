@@ -28,6 +28,12 @@ let getNetPay = (e) => {
     .then((json) => {
       console.log(json)
       document.getElementById('netpay').innerHTML = json.netPay.toLocaleString()
+      document.getElementById('grosspay').innerHTML =
+        json.grossPay.toLocaleString()
+      document.getElementById('withheld').innerHTML = (
+        ((json.grossPay - json.netPay) / json.grossPay) *
+        100
+      ).toLocaleString()
       e.target.style.background = '#27ae60'
       e.target.style.color = '#ecf0f1'
       setTimeout(() => {

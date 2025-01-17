@@ -1,5 +1,5 @@
-from flask import Flask, render_template
-from flask_login import LoginManager, login_required, current_user
+from flask import Flask, redirect, render_template
+from flask_login import LoginManager, login_required, current_user, logout_user
 from models import db, User, PaycheckCalculatorConfig
 import tomlkit
 
@@ -16,7 +16,7 @@ db.init_app(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "login"
+login_manager.login_view = "auth.login"
 
 
 @login_manager.user_loader
@@ -40,6 +40,7 @@ def create_user():
     new_user = User("Everett", "everettdw", "benten")
     db.session.add(new_user)
     db.session.commit()
+    return redirect("/login")
 
 
 @app.route("/crepcc/<pcc_name>")
@@ -48,3 +49,4 @@ def create_paycheck_calc_config(pcc_name):
     new_pcc = PaycheckCalculatorConfig(current_user, pcc_name, 46.5, 2.0, 80, 80)
     db.session.add(new_pcc)
     db.session.commit()
+    return redirect("/pccs")
