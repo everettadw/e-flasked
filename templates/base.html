@@ -7,12 +7,33 @@
         
         <title>{% block title %}{% endblock %}</title>
 
-        <link rel="stylesheet" href="{{ url_for('static', filename='reset.css') }}">
+        <!--<link rel="stylesheet" href="{{ url_for('static', filename='reset.css') }}">-->
         <link rel="stylesheet" href="{{ url_for('static', filename='bulma.min.css') }}">
         {% block head %}{% endblock %}
     </head>
-    <body>
-        <div class="main-container">
+    <body class="has-spaced-navbar-fixed-top">
+        <nav class="navbar is-spaced has-shadow is-fixed-top" role="navigation" aria-label="main navigation">
+            <div class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="{{ url_for('index') }}">
+                        MyFinanceShit
+                    </a>
+                </div>
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-primary">
+                                <strong>Sign Up</strong>
+                            </a>
+                            <a class="button is-light">
+                                Log In
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <section class="section">
             {% block body %}
             {% endblock %}
         </div>
