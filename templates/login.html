@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="columns">
+    <div class="column"></div>
+    <div class="column is-one-third">
+        <form action="" method="POST" class="pb-1">
+            <div class="field">
+                <label class="label" for="username">Username</label>
+                <div class="control">
+                    <input class="input is-expanded" type="text" name="username" id="username">
+                </div>
+            </div>
+            <div class="field">
+                <label class="label" for="password">Password</label>
+                <input class="input" type="password" name="password" id="password">
+            </div>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="control mt-2">
+                <input class="button is-primary" type="submit" value="Login"> 
+                <a href="{{ url_for('auth.register_get') }}" class="button is-light">Sign Up</a>
+            </div>
+        </form>
+    </div>      
+    <div class="column"></div>  
+</div>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <article class="message is-warning">
+                <div class="message-body">
+                    {{ message }}
+                </div>
+            </article>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+{% endblock %}

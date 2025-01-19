@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         
-        <title>{% block title %}{% endblock %}</title>
+        <title>Finance Tracker - {% block title %}{% endblock %}</title>
 
         <!--<link rel="stylesheet" href="{{ url_for('static', filename='reset.css') }}">-->
         <link rel="stylesheet" href="{{ url_for('static', filename='bulma.min.css') }}">
@@ -22,6 +22,9 @@
                         <a class="navbar-item" href="{{ url_for('get_pccs') }}">
                             PCCs
                         </a>
+                        <a class="navbar-item" href="{{ url_for("PaycheckCalculator.paycheck_calculator") }}">
+                            Paycheck Calc
+                        </a>
                     {% endif %}
                 </div>
                 <div class="navbar-end">
@@ -36,9 +39,9 @@
                                 </a>
                             {% else %}
                                 <a class="button is-primary">
-                                    <strong>Sign Up</strong>
+                                    <strong>Register</strong>
                                 </a>
-                                <a class="button is-light" href="{{ url_for('auth.login') }}">
+                                <a class="button is-light" href="{{ url_for('auth.login_get') }}">
                                     Log In
                                 </a>
                             {% endif %}

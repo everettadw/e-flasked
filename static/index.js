@@ -55,8 +55,6 @@ let getNetPay = (e) => {
 }
 
 window.onload = () => {
-  calculateBtnEl = document.querySelector(
-    ".form-control-buttons input[value='Calculate']"
-  )
+  calculateBtnEl = document.querySelector("input[value='Calculate']")
   calculateBtnEl.addEventListener('click', getNetPay)
 }

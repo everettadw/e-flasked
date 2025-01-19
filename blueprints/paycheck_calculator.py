@@ -18,9 +18,10 @@ class PayrateMath:
 
 
 pay_calc_bp = Blueprint("PaycheckCalculator", __name__)
+pay_calc_api_bp = Blueprint("PaycheckCalculatorAPI", __name__)
 
 
-@pay_calc_bp.route("/paycheck-calculator/")
+@pay_calc_bp.get("/paycheck-calculator/")
 def paycheck_calculator():
     # TODO: replace following section with flask-ified version
     # with open("config.toml", "r") as file_handle:
@@ -42,13 +43,8 @@ def paycheck_calculator():
     return render_template("old-paycheck-calculator.html")
 
 
-@pay_calc_bp.route("/api/paycheck-calculator/", methods=["POST"])
+@pay_calc_api_bp.post("/api/paycheck-calculator/")
 def api_paycheck_calculator():
-
-    if request.method != "POST" or not request.is_json:
-        response = make_response({"error": True, "message": "Incorrect usage of api."})
-        response.status_code = 422
-        return response
 
     url = "https://calculators.symmetry.com/api/calculators/salary"
     headers = {
