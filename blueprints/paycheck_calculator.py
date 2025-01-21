@@ -1,5 +1,8 @@
 from flask import Blueprint, request, render_template, make_response, current_app
-import requests, tomlkit
+from flask_login import login_required
+import requests
+
+from models import User, db
 
 
 class PayrateMath:
@@ -22,24 +25,8 @@ pay_calc_api_bp = Blueprint("PaycheckCalculatorAPI", __name__)
 
 
 @pay_calc_bp.get("/paycheck-calculator")
+@login_required
 def paycheck_calculator():
-    # TODO: replace following section with flask-ified version
-    # with open("config.toml", "r") as file_handle:
-    #     toml_config = tomlkit.load(file_handle)
-    # if username not in toml_config:
-    #     toml_config.update(
-    #         {
-    #             username: {
-    #                 "base_payrate": 0.0,
-    #                 "shiftdiff_payrate": 0.0,
-    #                 "benefit_cost": 0.0,
-    #                 "base_hours": 0.0,
-    #                 "shiftdiff_hours": 0.0,
-    #                 "overtime_hours": 0.0,
-    #             }
-    #         }
-    #     )
-    # toml_config = toml_config[username]
     return render_template("old-paycheck-calculator.html")
 
 
@@ -53,6 +40,8 @@ def api_paycheck_calculator():
         "Pcc-Api-Key": current_app.config["PAYCHECK_CALC_API_KEY"],
     }
 
+    USER_ID = request.json.get("user_id")
+
     BASE_PAYRATE = float(request.json.get("base_payrate"))
     SHIFT_DIFF_PAYRATE = float(request.json.get("shiftdiff_payrate"))
     OVERTIME_PAYRATE = BASE_PAYRATE * 1.5
@@ -62,7 +51,7 @@ def api_paycheck_calculator():
     OVERTIME_HOURS = float(request.json.get("overtime_hours"))
 
     BENEFITS_COST = float(request.json.get("benefit_cost"))
-    RETIREMENT_COST = float(request.json.get("retirement_cost")) / 100
+    RETIREMENT_COST = float(request.json.get("retirement_cost"))
 
     payrates = [
         {"payRate": str(BASE_PAYRATE), "hours": str(BASE_HOURS)},
@@ -73,7 +62,16 @@ def api_paycheck_calculator():
     req_handler = PayrateMath(BASE_PAYRATE, SHIFT_DIFF_PAYRATE, OVERTIME_PAYRATE)
     gross_pay_str = req_handler.get_gross_pay_str(payrates)
 
-    RETIREMENT_DOLLARS = float(gross_pay_str) * RETIREMENT_COST
+    user = User.query.filter_by(id=USER_ID).first()
+
+    if user != None:
+        user.base_payrate = BASE_PAYRATE
+        user.shift_diff_payrate = SHIFT_DIFF_PAYRATE
+        user.benefits_cost = BENEFITS_COST
+        user.retirement_cost = RETIREMENT_COST
+        db.session.commit()
+
+    RETIREMENT_DOLLARS = float(gross_pay_str) * RETIREMENT_COST / 100
     BENEFITS_COST += RETIREMENT_DOLLARS
 
     payload = {
@@ -131,26 +129,5 @@ def api_paycheck_calculator():
     }
 
     response = requests.post(url, headers=headers, json=payload)
-
-    # TODO: replace the following section with flask session mumbo jumbo
-    # with open("config.toml", "r") as file_handle:
-    #     toml_config = tomlkit.load(file_handle)
-
-    # toml_config.update(
-    #     {
-    #         request.json.get("username"): {
-    #             "base_payrate": BASE_PAYRATE,
-    #             "shiftdiff_payrate": SHIFT_DIFF_PAYRATE,
-    #             "benefit_cost": BENEFITS_COST,
-    #             "base_hours": BASE_HOURS,
-    #             "shiftdiff_hours": SHIFT_DIFF_HOURS,
-    #             "overtime_hours": OVERTIME_HOURS,
-    #             "last_netpay": float(response.json().get("content").get("netPay")),
-    #         }
-    #     }
-    # )
-
-    # with open("config.toml", "w") as file_handle:
-    #     tomlkit.dump(toml_config, file_handle)
 
     return response.json().get("content")

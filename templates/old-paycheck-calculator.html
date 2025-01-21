@@ -4,6 +4,9 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+<script type='text/javascript'>
+const USER_ID = {{current_user.id}};
+</script>
 <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
 {% endblock %}
 
@@ -12,52 +15,37 @@
 <div class="form-container flex-center-contents">
     <form id="paycheck-calculator-form">
         <div class="row">
-            <div class="field-extended">
-                <h2>Payrates ( $/HR )</h2>
+            <div class="field-input">
+                <label for="base_payrate">Hourly Pay</label>
+                <input autocomplete="off" placeholder="0.00" type="float" name="base_payrate" id="base_payrate" value="{{ current_user.base_payrate }}" />
+            </div>
+            <div class="field-input">
+                <label for="shiftdiff_payrate">Shift Diff Pay</label>
+                <input autocomplete="off" placeholder="0.00" type="float" name="shiftdiff_payrate" id="shiftdiff_payrate" value="{{ current_user.shift_diff_payrate }}" />
             </div>
         </div>
         <div class="row">
             <div class="field-input">
-                <label for="base_payrate">Base</label>
-                <input autocomplete="off" placeholder="0.00" type="float" name="base_payrate" id="base_payrate" />
+                <label for="base_hours">Regular Hours</label>
+                <input autocomplete="off" placeholder="0.00" type="float" name="base_hours" id="base_hours" value="0.0" />
             </div>
             <div class="field-input">
-                <label for="shiftdiff_payrate">Shift Diff</label>
-                <input autocomplete="off" placeholder="0.00" type="float" name="shiftdiff_payrate" id="shiftdiff_payrate" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="field-extended">
-                <h2>Hours Worked</h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="field-input">
-                <label for="base_hours">Base</label>
-                <input autocomplete="off" placeholder="0.00" type="float" name="base_hours" id="base_hours" />
+                <label for="shiftdiff_hours">Shift Diff Hours</label>
+                <input autocomplete="off" placeholder="0.00" type="float" name="shiftdiff_hours" id="shiftdiff_hours" value="0.0" />
             </div>
             <div class="field-input">
-                <label for="shiftdiff_hours">Shift Diff</label>
-                <input autocomplete="off" placeholder="0.00" type="float" name="shiftdiff_hours" id="shiftdiff_hours" />
-            </div>
-            <div class="field-input">
-                <label for="overtime_hours">OT / HOL</label>
-                <input autocomplete="off" placeholder="0.00" type="float" name="overtime_hours" id="overtime_hours" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="field-extended">
-                <h2>Voluntary Deductions</h2>
+                <label for="overtime_hours">OT / HOL Hours</label>
+                <input autocomplete="off" placeholder="0.00" type="float" name="overtime_hours" id="overtime_hours" value="0.0" />
             </div>
         </div>
         <div class="row">
             <div class="field-input">
                 <label for="benefit_cost">Benefits</label>
-                <input autocomplete="off" placeholder="0.00" type="float" name="benefit_cost" id="benefit_cost" />
+                <input autocomplete="off" placeholder="0.00" type="float" name="benefit_cost" id="benefit_cost" value="{{ current_user.benefits_cost }}"/>
             </div>
             <div class="field-input">
                 <label for="retirement_cost">Retirement %</label>
-                <input autocomplete="off" placeholder="0.0" type="float" name="retirement_cost" id="retirement_cost" />
+                <input autocomplete="off" placeholder="0.0" type="float" name="retirement_cost" id="retirement_cost" value="{{ current_user.retirement_cost }}"/>
             </div>
         </div>
         <div class="row">
@@ -67,16 +55,16 @@
         </div>
         <div class="row">
             <div class="field">
-                <h2>Gross Pay</h2>
-                <h2>$<span id="grosspay">0.00</span></h2>
+                <p style="text-align: center; width: 100%;">Gross Pay</p>
+                <p style="text-align: center; width: 100%; font-weight: bold;">$<span id="grosspay">0.00</span></p>
             </div>
             <div class="field">
-                <h2>Net Pay</h2>
-                <h2>$<span id="netpay">0.00</span></h2>
+                <p style="text-align: center; width: 100%;">Net Pay</p>
+                <p style="text-align: center; width: 100%; font-weight: bold;">$<span id="netpay">0.00</span></p>
             </div>
             <div class="field">
-                <h2>Withheld</h2>
-                <h2><span id="withheld">0.0</span>%</h2>
+                <p style="text-align: center; width: 100%;">Withheld</p>
+                <p style="text-align: center; width: 100%; font-weight: bold;"><span id="withheld">0.0</span>%</p>
             </div>
         </div>
     </form>

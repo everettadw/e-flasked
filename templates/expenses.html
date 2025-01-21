@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Expenses{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="banger-2">
+    <div class="flex-center-contents">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Day of Month</th>
+            </tr>
+            {% for expense in current_user.expenses %}
+                <tr>
+                    <td>{{ expense.name }}</td>
+                    <td>{{ expense.amount }}</td>
+                    <td>{{ expense.day_of_month }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="form-container flex-center-contents">
+        <form action="" method="POST">
+            <div class="row">
+                <div class="field-input">
+                    <label for="name">Name</label>
+                    <input autocomplete="off" type="text" name="name" id="name" placeholder="expense name">
+                </div>
+                <div class="field-input">
+                    <label for="amount">Amount</label>
+                    <input autocomplete="off" type="float" name="amount" id="amount" placeholder="0.00">
+                </div>
+            </div>
+            <div class="row">
+                <div class="field-input">
+                    <label for="day_of_month">Day of Month</label>
+                    <input autocomplete="off" type="text" name="day_of_month" id="day_of_month" placeholder="15">
+                </div>
+                <div class="field-input">
+                    <label for="payment_source">Payment Source</label>
+                    <input autocomplete="off" type="text" name="payment_source" id="payment_source" placeholder="1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="field-extended-button">
+                    <input class="button" type="submit" value="Create Expense">
+                </div>
+            </div>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        </form>
+    </div>
+</div>
+{% endblock %}

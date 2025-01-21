@@ -1,5 +1,5 @@
-from flask import Flask, redirect, render_template
-from flask_login import LoginManager, login_required, current_user, logout_user
+from flask import Flask, redirect, render_template, request, url_for
+from flask_login import LoginManager, login_required, current_user
 from flask_wtf import CSRFProtect
 from models import *
 import tomlkit
@@ -9,21 +9,20 @@ from blueprints.auth import auth_bp
 
 
 app = Flask(__name__)
+app.config.from_file("flask_config.toml", tomlkit.load)
+
 csrf = CSRFProtect(app)
 csrf.exempt(pay_calc_api_bp)
-app.config.from_file("flask_config.toml", tomlkit.load)
 
 app.register_blueprint(pay_calc_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(pay_calc_api_bp)
-db.init_app(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "auth.login_get"
 
-with app.app_context():
-    db.create_all()
+db.init_app(app)
 
 
 @login_manager.user_loader
@@ -31,34 +30,31 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-@app.route("/")
+@app.get("/")
 def index():
     return render_template("index.html")
 
 
 @app.get("/testing")
 def testing():
-    return render_template("css-testing.html")
+    return render_template("testing.html")
 
 
-@app.route("/pccs")
+@app.get("/expenses")
 @login_required
-def get_pccs():
-    return render_template("pccs.html", pccs=current_user.paycheck_calculator_configs)
+def get_expenses():
+    return render_template("expenses.html")
 
 
-@app.route("/creu")
-def create_user():
-    new_user = User("Everett", "everettdw", "benten")
-    db.session.add(new_user)
+@app.post("/expenses")
+def post_expenses():
+    new_expense = Expense(
+        request.form.get("name"),
+        float(request.form.get("amount")),
+        int(request.form.get("day_of_month")),
+        int(request.form.get("payment_source")),
+        user=current_user,
+    )
+    db.session.add(new_expense)
     db.session.commit()
-    return redirect("/login")
-
-
-@app.route("/pccs/<pcc_name>")
-@login_required
-def create_paycheck_calc_config(pcc_name):
-    new_pcc = PaycheckCalculatorConfig(current_user, pcc_name, 46.5, 2.0, 80, 80)
-    db.session.add(new_pcc)
-    db.session.commit()
-    return redirect("/pccs")
+    return render_template("expenses.html")

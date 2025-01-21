@@ -9,7 +9,7 @@ let getNetPay = (e) => {
     reqJson[entry[0]] = entry[1]
   }
 
-  reqJson['username'] = window.curr_username
+  reqJson['user_id'] = USER_ID
 
   fetch('http://127.0.0.1:5000/api/paycheck-calculator', {
     method: 'POST',
