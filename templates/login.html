@@ -10,13 +10,13 @@
 <div class="form-container flex-center-contents">
     <form action="" method="POST">
         <div class="row">
-            <div class="field">
+            <div class="field-input">
                 <label for="username">Username</label>
-                <input type="text" name="username" id="username" placeholder="user123" value="{{ request.form.get('username', '') }}">
+                <input autocomplete="off" type="text" name="username" id="username" placeholder="user123" value="{{ request.form.get('username', '') }}">
             </div>
-            <div class="field">
+            <div class="field-input">
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password" placeholder="pass123">
+                <input autocomplete="off" type="password" name="password" id="password" placeholder="pass123">
             </div>
         </div>
         <div class="row">

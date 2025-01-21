@@ -26,7 +26,6 @@ let getNetPay = (e) => {
       }
     })
     .then((json) => {
-      console.log(json)
       document.getElementById('netpay').innerHTML = json.netPay.toLocaleString()
       document.getElementById('grosspay').innerHTML =
         json.grossPay.toLocaleString()
@@ -40,7 +39,7 @@ let getNetPay = (e) => {
         e.target.disabled = false
         e.target.style.background = null
         e.target.style.color = null
-      }, 2500)
+      }, 2000)
     })
     .catch((err) => {
       console.log(err)
@@ -50,7 +49,7 @@ let getNetPay = (e) => {
         e.target.disabled = false
         e.target.style.background = null
         e.target.style.color = null
-      }, 2500)
+      }, 2000)
     })
 }
 

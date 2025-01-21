@@ -9,77 +9,77 @@
 
 {% block body %}
 
-    <div class="form-container flex-center-contents">
-        <form id="paycheck-calculator-form">
-            <div class="row">
-                <div class="field-extended">
-                    <h2>Payrates ( $/HR )</h2>
-                </div>
+<div class="form-container flex-center-contents">
+    <form id="paycheck-calculator-form">
+        <div class="row">
+            <div class="field-extended">
+                <h2>Payrates ( $/HR )</h2>
             </div>
-            <div class="row">
-                <div class="field">
-                    <label for="base_payrate">Base</label>
-                    <input placeholder="0.00" type="float" name="base_payrate" id="base_payrate" />
-                </div>
-                <div class="field">
-                    <label for="shiftdiff_payrate">Shift Diff</label>
-                    <input placeholder="0.00" type="float" name="shiftdiff_payrate" id="shiftdiff_payrate" />
-                </div>
+        </div>
+        <div class="row">
+            <div class="field-input">
+                <label for="base_payrate">Base</label>
+                <input autocomplete="off" placeholder="0.00" type="float" name="base_payrate" id="base_payrate" />
             </div>
-            <div class="row">
-                <div class="field-extended">
-                    <h2>Hours Worked</h2>
-                </div>
+            <div class="field-input">
+                <label for="shiftdiff_payrate">Shift Diff</label>
+                <input autocomplete="off" placeholder="0.00" type="float" name="shiftdiff_payrate" id="shiftdiff_payrate" />
             </div>
-            <div class="row">
-                <div class="field">
-                    <label for="base_hours">Base</label>
-                    <input placeholder="0.00" type="float" name="base_hours" id="base_hours" />
-                </div>
-                <div class="field">
-                    <label for="shiftdiff_hours">Shift Diff</label>
-                    <input placeholder="0.00" type="float" name="shiftdiff_hours" id="shiftdiff_hours" />
-                </div>
-                <div class="field">
-                    <label for="overtime_hours">OT / HOL</label>
-                    <input placeholder="0.00" type="float" name="overtime_hours" id="overtime_hours" />
-                </div>
+        </div>
+        <div class="row">
+            <div class="field-extended">
+                <h2>Hours Worked</h2>
             </div>
-            <div class="row">
-                <div class="field-extended">
-                    <h2>Voluntary Deductions</h2>
-                </div>
+        </div>
+        <div class="row">
+            <div class="field-input">
+                <label for="base_hours">Base</label>
+                <input autocomplete="off" placeholder="0.00" type="float" name="base_hours" id="base_hours" />
             </div>
-            <div class="row">
-                <div class="field">
-                    <label for="benefit_cost">Benefits</label>
-                    <input placeholder="0.00" type="float" name="benefit_cost" id="benefit_cost" />
-                </div>
-                <div class="field">
-                    <label for="retirement_cost">Retirement %</label>
-                    <input placeholder="0.0" type="float" name="retirement_cost" id="retirement_cost" />
-                </div>
+            <div class="field-input">
+                <label for="shiftdiff_hours">Shift Diff</label>
+                <input autocomplete="off" placeholder="0.00" type="float" name="shiftdiff_hours" id="shiftdiff_hours" />
             </div>
-            <div class="row">
-                <div class="field-extended-button">
-                    <input class="button" type="submit" value="Calculate"/>
-                </div>
+            <div class="field-input">
+                <label for="overtime_hours">OT / HOL</label>
+                <input autocomplete="off" placeholder="0.00" type="float" name="overtime_hours" id="overtime_hours" />
             </div>
-            <div class="row">
-                <div class="field">
-                    <h2>Gross Pay</h2>
-                    <h2>$<span id="grosspay">0.00</span></h2>
-                </div>
-                <div class="field">
-                    <h2>Net Pay</h2>
-                    <h2>$<span id="netpay">0.00</span></h2>
-                </div>
-                <div class="field">
-                    <h2>Withheld</h2>
-                    <h2><span id="withheld">0.0</span>%</h2>
-                </div>
+        </div>
+        <div class="row">
+            <div class="field-extended">
+                <h2>Voluntary Deductions</h2>
             </div>
-        </form>
-    </div>
+        </div>
+        <div class="row">
+            <div class="field-input">
+                <label for="benefit_cost">Benefits</label>
+                <input autocomplete="off" placeholder="0.00" type="float" name="benefit_cost" id="benefit_cost" />
+            </div>
+            <div class="field-input">
+                <label for="retirement_cost">Retirement %</label>
+                <input autocomplete="off" placeholder="0.0" type="float" name="retirement_cost" id="retirement_cost" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="field-extended-button">
+                <input class="button" type="submit" value="Calculate"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="field">
+                <h2>Gross Pay</h2>
+                <h2>$<span id="grosspay">0.00</span></h2>
+            </div>
+            <div class="field">
+                <h2>Net Pay</h2>
+                <h2>$<span id="netpay">0.00</span></h2>
+            </div>
+            <div class="field">
+                <h2>Withheld</h2>
+                <h2><span id="withheld">0.0</span>%</h2>
+            </div>
+        </div>
+    </form>
+</div>
 
 {% endblock %}

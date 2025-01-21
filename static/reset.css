@@ -121,10 +121,49 @@ nav > div:first-child > p {
     border-right: 2px solid var(--text-color);
 }
 
+
+.form-container > form > div.row > div.field-input {
+    width: 100%;
+    position: relative;
+    height: 4rem;
+}
+.form-container > form > div.row > div.field-input input {
+    background-color: transparent !important;
+    width: 100%;
+    height: 4rem;
+    border: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding-top: 1.5rem;
+    padding-left: 0.75rem;
+    font-size: 1rem;
+}
+.form-container > form > div.row > div.field-input input:focus {
+    outline: none;
+}
+.form-container > form > div.row > div.field-input label {
+    position: absolute;
+    left: 0.7rem;
+    top: 0.75rem;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+.form-container > form > div.row > div.field-input:first-of-type {
+    border-right: 1px solid var(--text-color);
+}
+.form-container > form > div.row > div.field-input:last-of-type {
+    border-left: 1px solid var(--text-color);
+}
+.form-container > form > div.row > div.field-input:not(:first-of-type):not(:last-of-type) {
+    border-right: 1px solid var(--text-color);
+    border-left: 1px solid var(--text-color);
+}
+
 .form-container > form > div.row > div.field,
 .form-container > form > div.row > div.field-extended {
     display: flex;
-    padding: 1rem;
+    padding: 0.6rem;
     width: 100%;
     flex-direction: column;
     justify-content: center;
@@ -156,7 +195,7 @@ nav > div:first-child > p {
 .form-container > form > div.row > div.field-extended {
     width: 100%;
     border: none;
-    padding: 1rem;
+    padding: 0.6rem;
 }
 .form-container > form > div.row > div.field-extended-button {
     width: 100%;
