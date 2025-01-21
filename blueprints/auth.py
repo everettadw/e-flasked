@@ -1,6 +1,6 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_user, logout_user
-from models import User
+from models import User, db
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -19,7 +19,7 @@ def login_post():
         login_user(user=user)
         return redirect(url_for("index"))
     flash("Incorrect username or password.")
-    return redirect(url_for("auth.login_get"))
+    return render_template("login.html")
 
 
 @auth_bp.get("/register")
@@ -31,7 +31,23 @@ def register_get():
 
 @auth_bp.post("/register")
 def register_post():
-    return redirect(url_for("auth.register_get"))
+    user = User.query.filter_by(username=request.form.get("username")).first()
+    if user != None:
+        flash("That username is already taken - choose another one...")
+    else:
+        if request.form.get("password") == request.form.get("confirm_password"):
+            new_user = User(
+                request.form.get("name"),
+                request.form.get("username"),
+                request.form.get("password"),
+            )
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user)
+            return redirect(url_for("index"))
+        else:
+            flash("Passwords don't match...")
+    return render_template("register.html")
 
 
 @auth_bp.route("/logout")

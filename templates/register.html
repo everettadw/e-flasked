@@ -7,38 +7,46 @@
 {% endblock %}
 
 {% block body %}
-<div class="columns">
-    <div class="column"></div>
-    <div class="column is-one-third">
-        <form action="" method="POST" class="pb-1">
+<div class="form-container flex-center-contents">
+    <form action="" method="POST">
+        <div class="row">
             <div class="field">
-                <label class="label" for="username">Username</label>
-                <div class="control">
-                    <input class="input is-expanded" type="text" name="username" id="username">
-                </div>
+                <label for="name">Name</label>
+                <input placeholder='firstname lastname' type="text" name="name" id="name" value="{{ request.form.get('name', '') }}">
             </div>
             <div class="field">
-                <label class="label" for="password">Password</label>
-                <input class="input" type="password" name="password" id="password">
+                <label for="username">Username</label>
+                <input placeholder='user123' type="text" name="username" id="username" value="{{ request.form.get('username', '') }}">
             </div>
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <div class="control mt-2">
-                <input class="button is-primary" type="submit" value="Register"> 
-                <a href="{{ url_for('auth.login_get') }}" class="button is-light">Login</a>
+        </div>
+        <div class="row">
+            <div class="field">
+                <label for="password">Password</label>
+                <input placeholder='pass123' type="password" name="password" id="password">
             </div>
-        </form>
-    </div>      
-    <div class="column"></div>  
+            <div class="field">
+                <label for="confirm_password">Confirm Pass</label>
+                <input placeholder='pass123' type="password" name="confirm_password" id="confirm_password">
+            </div>
+        </div>
+        <div class="row">
+            <div class="field-extended-button">
+                <input class="button" type="submit" value="Register">
+            </div>
+        </div>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <article class="message is-warning">
+                    <div class="message-body">
+                        {{ message }}
+                    </div>
+                </article>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 </div>
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        {% for message in messages %}
-            <article class="message is-warning">
-                <div class="message-body">
-                    {{ message }}
-                </div>
-            </article>
-        {% endfor %}
-    {% endif %}
-{% endwith %}
 {% endblock %}

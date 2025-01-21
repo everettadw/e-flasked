@@ -62,6 +62,7 @@ def api_paycheck_calculator():
     OVERTIME_HOURS = float(request.json.get("overtime_hours"))
 
     BENEFITS_COST = float(request.json.get("benefit_cost"))
+    RETIREMENT_COST = float(request.json.get("retirement_cost")) / 100
 
     payrates = [
         {"payRate": str(BASE_PAYRATE), "hours": str(BASE_HOURS)},
@@ -71,6 +72,9 @@ def api_paycheck_calculator():
 
     req_handler = PayrateMath(BASE_PAYRATE, SHIFT_DIFF_PAYRATE, OVERTIME_PAYRATE)
     gross_pay_str = req_handler.get_gross_pay_str(payrates)
+
+    RETIREMENT_DOLLARS = float(gross_pay_str) * RETIREMENT_COST
+    BENEFITS_COST += RETIREMENT_DOLLARS
 
     payload = {
         "grossPay": gross_pay_str,

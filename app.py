@@ -36,6 +36,11 @@ def index():
     return render_template("index.html")
 
 
+@app.get("/testing")
+def testing():
+    return render_template("css-testing.html")
+
+
 @app.route("/pccs")
 @login_required
 def get_pccs():
