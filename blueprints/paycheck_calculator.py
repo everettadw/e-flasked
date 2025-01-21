@@ -21,7 +21,7 @@ pay_calc_bp = Blueprint("PaycheckCalculator", __name__)
 pay_calc_api_bp = Blueprint("PaycheckCalculatorAPI", __name__)
 
 
-@pay_calc_bp.get("/paycheck-calculator/")
+@pay_calc_bp.get("/paycheck-calculator")
 def paycheck_calculator():
     # TODO: replace following section with flask-ified version
     # with open("config.toml", "r") as file_handle:
@@ -43,7 +43,7 @@ def paycheck_calculator():
     return render_template("old-paycheck-calculator.html")
 
 
-@pay_calc_api_bp.post("/api/paycheck-calculator/")
+@pay_calc_api_bp.post("/api/paycheck-calculator")
 def api_paycheck_calculator():
 
     url = "https://calculators.symmetry.com/api/calculators/salary"

@@ -11,7 +11,7 @@ let getNetPay = (e) => {
 
   reqJson['username'] = window.curr_username
 
-  fetch('http://127.0.0.1:5000/api/paycheck-calculator/', {
+  fetch('http://127.0.0.1:5000/api/paycheck-calculator', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
