@@ -67,6 +67,7 @@ const USER_ID = {{current_user.id}};
                 <p style="text-align: center; width: 100%; font-weight: bold;"><span id="withheld">0.0</span>%</p>
             </div>
         </div>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" id="csrf_token">
     </form>
 </div>
 

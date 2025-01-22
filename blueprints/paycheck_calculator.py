@@ -21,7 +21,6 @@ class PayrateMath:
 
 
 pay_calc_bp = Blueprint("PaycheckCalculator", __name__)
-pay_calc_api_bp = Blueprint("PaycheckCalculatorAPI", __name__)
 
 
 @pay_calc_bp.get("/paycheck-calculator")
@@ -30,8 +29,11 @@ def paycheck_calculator():
     return render_template("old-paycheck-calculator.html")
 
 
-@pay_calc_api_bp.post("/api/paycheck-calculator")
+@pay_calc_bp.post("/paycheck-calculator")
+@login_required
 def api_paycheck_calculator():
+
+    req_json = request.json
 
     url = "https://calculators.symmetry.com/api/calculators/salary"
     headers = {
@@ -40,18 +42,18 @@ def api_paycheck_calculator():
         "Pcc-Api-Key": current_app.config["PAYCHECK_CALC_API_KEY"],
     }
 
-    USER_ID = request.json.get("user_id")
+    USER_ID = req_json.get("user_id")
 
-    BASE_PAYRATE = float(request.json.get("base_payrate"))
-    SHIFT_DIFF_PAYRATE = float(request.json.get("shiftdiff_payrate"))
+    BASE_PAYRATE = float(req_json.get("base_payrate"))
+    SHIFT_DIFF_PAYRATE = float(req_json.get("shiftdiff_payrate"))
     OVERTIME_PAYRATE = BASE_PAYRATE * 1.5
 
-    BASE_HOURS = float(request.json.get("base_hours"))
-    SHIFT_DIFF_HOURS = float(request.json.get("shiftdiff_hours"))
-    OVERTIME_HOURS = float(request.json.get("overtime_hours"))
+    BASE_HOURS = float(req_json.get("base_hours"))
+    SHIFT_DIFF_HOURS = float(req_json.get("shiftdiff_hours"))
+    OVERTIME_HOURS = float(req_json.get("overtime_hours"))
 
-    BENEFITS_COST = float(request.json.get("benefit_cost"))
-    RETIREMENT_COST = float(request.json.get("retirement_cost"))
+    BENEFITS_COST = float(req_json.get("benefit_cost"))
+    RETIREMENT_COST = float(req_json.get("retirement_cost"))
 
     payrates = [
         {"payRate": str(BASE_PAYRATE), "hours": str(BASE_HOURS)},

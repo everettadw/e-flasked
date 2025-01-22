@@ -20,8 +20,7 @@ class User(db.Model, UserMixin):
     benefits_cost = db.Column(db.Numeric(scale=2), nullable=False)
     retirement_cost = db.Column(db.Float, nullable=False)
 
-    expenses = db.relationship("Expense", backref="user")
-    income = db.relationship("Income", backref="user")
+    recurring_transactions = db.relationship("RecurringTransaction", backref="user")
 
     def __init__(self, name: str, username: str, password: str):
         self.name = name
@@ -43,50 +42,29 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password_hash, password)
 
 
-class Expense(db.Model):
-    __tablename__ = "expenses"
+class RecurringTransaction(db.Model):
+    __tablename__ = "recurring_transactions"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     amount = db.Column(db.Numeric(scale=2), nullable=False)
     day_of_month = db.Column(db.Integer, nullable=False)
-    payment_source = db.Column(db.Integer, nullable=False)
+    source = db.Column(db.Integer, nullable=False)
+    is_credit = db.Column(db.Boolean, nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
     def __init__(
         self,
+        user: User,
         name: str,
         amount: float,
         day_of_month: int,
-        payment_source: int,
-        user: User,
+        is_credit: bool = False,
     ):
+        self.user_id = user.id
         self.name = name
         self.amount = amount
         self.day_of_month = day_of_month
-        self.payment_source = payment_source
-        self.user_id = user.id
-
-
-class Income(db.Model):
-    __tablename__ = "income"
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-    amount = db.Column(db.Numeric(scale=2), nullable=False)
-    day_of_month = db.Column(db.Integer, nullable=False)
-
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-
-    def __init__(
-        self,
-        name: str,
-        amount: float,
-        day_of_month: int,
-        user: User,
-    ):
-        self.name = name
-        self.amount = amount
-        self.day_of_month = day_of_month
-        self.user_id = user.id
+        self.source = 0
+        self.is_credit = is_credit

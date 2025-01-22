@@ -2,6 +2,7 @@ let getNetPay = (e) => {
   e.target.disabled = true
   e.target.style.color = '#95a5a6'
   let formEl = document.getElementById('paycheck-calculator-form')
+  let csrfInputEl = document.getElementById('csrf_token')
   const formData = new FormData(formEl)
   let reqJson = {}
 
@@ -11,10 +12,11 @@ let getNetPay = (e) => {
 
   reqJson['user_id'] = USER_ID
 
-  fetch('http://127.0.0.1:5000/api/paycheck-calculator', {
+  fetch('http://127.0.0.1:5000/paycheck-calculator', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfInputEl.value,
     },
     body: JSON.stringify(reqJson),
   })

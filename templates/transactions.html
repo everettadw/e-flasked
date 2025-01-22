@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Expenses{% endblock %}
+{% block title %}Recurring Transactions{% endblock %}
 
 {% block head %}
 {% endblock %}
@@ -13,12 +13,14 @@
                 <th>Name</th>
                 <th>Amount</th>
                 <th>Day of Month</th>
+                <th>Is Credit</th>
             </tr>
-            {% for expense in current_user.expenses %}
+            {% for transaction in current_user.recurring_transactions %}
                 <tr>
-                    <td>{{ expense.name }}</td>
-                    <td>{{ expense.amount }}</td>
-                    <td>{{ expense.day_of_month }}</td>
+                    <td>{{ transaction.name }}</td>
+                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.day_of_month }}</td>
+                    <td>{{ transaction.is_credit }}</td>
                 </tr>
             {% endfor %}
         </table>
@@ -40,9 +42,9 @@
                     <label for="day_of_month">Day of Month</label>
                     <input autocomplete="off" type="text" name="day_of_month" id="day_of_month" placeholder="15">
                 </div>
-                <div class="field-input">
-                    <label for="payment_source">Payment Source</label>
-                    <input autocomplete="off" type="text" name="payment_source" id="payment_source" placeholder="1">
+                <div class="field-checkbox">
+                    <label for="is_credit">Is Credit</label>
+                    <input autocomplete="off" type="checkbox" name="is_credit" id="is_credit">
                 </div>
             </div>
             <div class="row">
