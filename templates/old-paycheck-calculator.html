@@ -12,8 +12,8 @@ const USER_ID = {{current_user.id}};
 
 {% block body %}
 
-<div class="form-container flex-center-contents">
-    <form id="paycheck-calculator-form">
+<div class="form-container pt-40 flex justify-center align-center">
+    <form class="bg-zinc-900" id="paycheck-calculator-form">
         <div class="row">
             <div class="field-input">
                 <label for="base_payrate">Hourly Pay</label>
@@ -22,6 +22,16 @@ const USER_ID = {{current_user.id}};
             <div class="field-input">
                 <label for="shiftdiff_payrate">Shift Diff Pay</label>
                 <input autocomplete="off" placeholder="0.00" type="float" name="shiftdiff_payrate" id="shiftdiff_payrate" value="{{ current_user.shift_diff_payrate }}" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="field-input">
+                <label for="benefit_cost">Benefits</label>
+                <input autocomplete="off" placeholder="0.00" type="float" name="benefit_cost" id="benefit_cost" value="{{ current_user.benefits_cost }}"/>
+            </div>
+            <div class="field-input">
+                <label for="retirement_cost">Retirement %</label>
+                <input autocomplete="off" placeholder="0.0" type="float" name="retirement_cost" id="retirement_cost" value="{{ current_user.retirement_cost }}"/>
             </div>
         </div>
         <div class="row">
@@ -36,16 +46,6 @@ const USER_ID = {{current_user.id}};
             <div class="field-input">
                 <label for="overtime_hours">OT / HOL Hours</label>
                 <input autocomplete="off" placeholder="0.00" type="float" name="overtime_hours" id="overtime_hours" value="0.0" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="field-input">
-                <label for="benefit_cost">Benefits</label>
-                <input autocomplete="off" placeholder="0.00" type="float" name="benefit_cost" id="benefit_cost" value="{{ current_user.benefits_cost }}"/>
-            </div>
-            <div class="field-input">
-                <label for="retirement_cost">Retirement %</label>
-                <input autocomplete="off" placeholder="0.0" type="float" name="retirement_cost" id="retirement_cost" value="{{ current_user.retirement_cost }}"/>
             </div>
         </div>
         <div class="row">
